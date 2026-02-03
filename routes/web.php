@@ -9,7 +9,7 @@ Route::get('/', function () {
 
 
 //For Studednt
-Route::prefix('category')->name('category.')->group(function () {
+Route::prefix('student')->name('student.')->group(function () {
         Route::get('', [StudentController::class, 'index'])->name('index');
         Route::get('create', [StudentController::class, 'create'])->name('create');
         Route::post('store', [StudentController::class, 'store'])->name('store');
