@@ -3,13 +3,13 @@
 @section('body') --}}
     <div class="row page-titles">
         <div class="col-md-5 align-self-center">
-            <h4 class="text-themecolor">Category</h4>
+            <h4 class="text-themecolor">Student</h4>
         </div>
         <div class="col-md-7 align-self-center text-end">
             <div class="d-flex justify-content-end align-items-center">
                 <ol class="breadcrumb justify-content-end">
                     <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
-                    <li class="breadcrumb-item active">Category</li>
+                    <li class="breadcrumb-item active">Student</li>
                 </ol>
                 {{-- <button type="button" class="btn btn-info d-none d-lg-block m-l-15 text-white"><i
                         class="fa fa-plus-circle"></i> Create New</button> --}}
@@ -22,7 +22,7 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="card-title">Add Category Form</h4>
+                    <h4 class="card-title">Add Student Form</h4>
                     <hr />
                     <h4 class="text-center text-success">{{ session('message') }}</h4>
                     <form class="form-horizontal p-t-20" action="{{ route('student.store') }}" method="POST"
