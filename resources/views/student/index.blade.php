@@ -1,6 +1,4 @@
-{{-- @extends('admin.master')
 
-@section('body') --}}
 @if (session('message'))
     <div class="alert alert-success alert-dismissible fade show text-center" role="alert">
         {{ session('message') }}
@@ -57,35 +55,35 @@
                             @foreach ($students as $student)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
-                                    <td>{{ $student->name }}</td> {{-- Fixed: $students->name to $student->name --}}
-                                    <td>{{ $student->student_id }}</td> {{-- Fixed: $students->student_id to $student->student_id --}}
-                                    <td>{{ $student->cgpa }}</td> {{-- Added CGPA column --}}
-                                    <td>{{ $student->age }}</td> {{-- Added Age column --}}
-                                    <td>{{ $student->email }}</td> {{-- Added Email column --}}
-                                    <td>{{ $student->phone ?? 'N/A' }}</td> {{-- Added Phone column --}}
-                                    <td>{{ $student->status == 1 ? 'Active' : 'Inactive' }}</td> {{-- Fixed the ternary operator --}}
+                                    <td>{{ $student->name }}</td>
+                                    <td>{{ $student->student_id }}</td>
+                                    <td>{{ $student->cgpa }}</td>
+                                    <td>{{ $student->age }}</td>
+                                    <td>{{ $student->email }}</td>
+                                    <td>{{ $student->phone ?? 'N/A' }}</td>
+                                    <td>{{ $student->status == 1 ? 'Active' : 'Inactive' }}</td>
                                     <td>
                                         @if ($student->status == 1)
                                             <a href="{{ route('student.status', $student->id) }}"
                                                 class="btn btn-success btn-sm" title="Deactivate">
-                                                <i class="ti-arrow-up"></i>
+                                                inactive
                                             </a>
                                         @else
                                             <a href="{{ route('student.status', $student->id) }}"
                                                 class="btn btn-warning btn-sm" title="Activate">
-                                                <i class="ti-arrow-down"></i>
+                                                active
                                             </a>
                                         @endif
 
                                         <a href="{{ route('student.edit', $student->id) }}" class="btn btn-info btn-sm"
                                             title="Edit">
-                                            <i class="ti-pencil"></i>
+                                            edit
                                         </a>
 
                                         <a href="{{ route('student.delete', $student->id) }}"
                                             class="btn btn-danger btn-sm" title="Delete"
                                             onclick="return confirm('Are You Sure?');">
-                                            <i class="ti-trash"></i>
+                                            delete
                                         </a>
                                     </td>
                                 </tr>
@@ -97,4 +95,4 @@
         </div>
     </div>
 </div>
-{{-- @endsection --}}
+

@@ -21,13 +21,13 @@ class StudentController extends Controller
     public function store(Request $request)
     {
         Student::create([
-            'name'        => $request->name,
-            'student_id' => $request->student_id,
-            'cgpa'      => $request->cgpa,
-            'age'       => $request->age,
-            'email'       => $request->email,
-            'phone'       => $request->phone,
-            'status'       => $request->status,
+            'name'          => $request->name,
+            'student_id'    => $request->student_id,
+            'cgpa'          => $request->cgpa,
+            'age'           => $request->age,
+            'email'         => $request->email,
+            'phone'         => $request->phone,
+            'status'        => $request->status,
         ]);
 
         return redirect()->route('student.index')
@@ -36,26 +36,24 @@ class StudentController extends Controller
     // showing create page
     public function edit($id)
     {
-        $Students = Student::where('id', $id)->first();
+        $student = Student::where('id', $id)->first();
         return view('student.edit', compact('student'));
     }
 
     // store the value
     public function update(Request $request)
     {
-        $Students = Student::find($request->id);
-
-            // $category = Category::where('id', $id)->first();
+        $student = Student::find($request->id);
        
 
-        $update = $Students->update([
-            'name' => $request->name,
-            'student_id' => $request->student_id,
-            'cgpa' => $request->cgpa,
-            'age' => $request->age,
-            'email' => $request->email,
-            'phone' => $request->phone,
-            'status' => $request->status,
+        $update = $student->update([
+            'name'              => $request->name,
+            'student_id'        => $request->student_id,
+            'cgpa'              => $request->cgpa,
+            'age'               => $request->age,
+            'email'             => $request->email,
+            'phone'             => $request->phone,
+            'status'            => $request->status,
         ]);
 
         if ($update) {
@@ -68,18 +66,18 @@ class StudentController extends Controller
 
     public function status($id)
     {
-        $Students = Student::where('id', $id)->first();
-        if ($Students->status == 1) {
-            $Students->update([
+        $student = Student::where('id', $id)->first();
+        if ($student->status == 1) {
+            $student->update([
                 'status' => 0,
             ]);
         } else {
-            $Students->update([
+            $student->update([
                 'status' => 1,
             ]);
         }
 
-        if ($Students) {
+        if ($student) {
             return redirect()->route('student.index')->with('message', 'Category update Successfully.');
         } else {
             return back()->with('message', 'Category does not update.');
@@ -88,8 +86,8 @@ class StudentController extends Controller
 
     public function delete($id)
     {
-        $Students = Student::where('id', $id)->delete();
-        if ($Students) {
+        $student = Student::where('id', $id)->delete();
+        if ($student) {
             return redirect()->route('student.index')->with('message', 'delete Successfully.');
         } else {
             return back()->with('message', 'does not create.');

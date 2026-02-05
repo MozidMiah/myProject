@@ -21,7 +21,7 @@
                         <label for="exampleInputuname3" class="col-sm-3 control-label">student_id <span
                                 class="text-danger">*</span></label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" name="name" value="{{ $student->student_id }}"
+                            <input type="text" class="form-control" name="student_id" value="{{ $student->student_id }}"
                                 id="exampleInputuname3" placeholder="student_id">
                         </div>
                     </div>
@@ -61,13 +61,13 @@
                         <label for="inputPassword4" class="col-sm-3 control-label">Publication Status</label>
                         <div class="col-sm-9">
                             <label>
-                                <input type="radio" name="status" value="1"
+                                <input type="radio" name="status" value="0"
                                     {{ $student->status == 0 ? 'checked' : '' }}> Published
                             </label>
 
                             <label>
-                                <input type="radio" name="status" value="2"
-                                    {{ $student->status == 2 ? 'checked' : '' }}> Unpublished
+                                <input type="radio" name="status" value="1"
+                                    {{ $student->status == 1 ? 'checked' : '' }}> Unpublished
                             </label>
                         </div>
                     </div>
