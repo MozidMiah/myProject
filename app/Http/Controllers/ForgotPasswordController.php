@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\ResetPasswordMail;
 use App\Models\password_resets;
 use Illuminate\Http\Request;
 use App\Models\User;
@@ -28,7 +29,6 @@ class ForgotPasswordController extends Controller
 
         $token = Str::random(64);
 
-        // যদি আগের token থাকে delete করে নতুন insert করবো
         password_resets::where('email', $request->email)->delete();
 
         password_resets::create([
@@ -38,10 +38,7 @@ class ForgotPasswordController extends Controller
         ]);
 
         // Send Mail
-        Mail::send('auth.forgot-password-mail', ['token' => $token], function ($message) use ($request) {
-            $message->to($request->email);
-            $message->subject('Reset Password Link');
-        });
+        Mail::to($request->email)->send(new ResetPasswordMail($token));
 
         return back()->with('success', 'Reset password link has been sent to your email!');
     }
