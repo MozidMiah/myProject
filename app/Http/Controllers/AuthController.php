@@ -53,7 +53,7 @@ class AuthController extends Controller
             return redirect()->route('dashboard');
         }
 
-        return back()->with('error', 'Invalid email or password');
+        return back()->with('error', 'Invalid Email or Password');
     }
 
     // Dashboard Page
@@ -70,6 +70,6 @@ class AuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect()->route('login')->with('message', 'Logout successful');
+        return redirect()->route('login')->with('message', 'Logout Successful');
     }
 }
