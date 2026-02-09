@@ -2,7 +2,7 @@
 
 <p>Click the link below to reset your password:</p>
 
-<a href="{{ url('/reset-password/'.$token) }}">
+<a href="{{ url('reset.password.post' .$token) }}">
     Reset Password
 </a>
 

@@ -48,7 +48,7 @@ class ForgotPasswordController extends Controller
     {
         return view('auth.reset-password', compact('token'));
     }
-    
+
 
     // Reset Password Submit
     public function resetPasswordPost(Request $request)
