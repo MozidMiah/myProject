@@ -1,19 +1,140 @@
-<h2>Register</h2>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
 
-@if(session('message'))
-    <p style="color:green">{{ session('message') }}</p>
-@endif
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #0d6efd, #6f42c1);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
-<form method="POST" action="{{ route('register.store') }}">
-    @csrf
+        .register-card {
+            background: #fff;
+            width: 450px;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0px 8px 25px rgba(0, 0, 0, 0.2);
+        }
 
-    <input type="text" name="name" placeholder="Enter Name"><br><br>
-    <input type="email" name="email" placeholder="Enter Email"><br><br>
+        .register-card h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
 
-    <input type="password" name="password" placeholder="Enter Password"><br><br>
-    <input type="password" name="password_confirmation" placeholder="Confirm Password"><br><br>
+        .alert-success {
+            background: #d1e7dd;
+            color: #0f5132;
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            font-size: 14px;
+            text-align: center;
+        }
 
-    <button type="submit">Register</button>
-</form>
+        label {
+            font-weight: bold;
+            font-size: 14px;
+            color: #444;
+        }
 
-<a href="{{ route('login') }}">Already have account? Login</a>
+        input {
+            width: 100%;
+            padding: 12px;
+            margin-top: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            outline: none;
+            font-size: 14px;
+        }
+
+        input:focus {
+            border-color: #0d6efd;
+            box-shadow: 0px 0px 5px rgba(13, 110, 253, 0.5);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .btn-register {
+            background: #0d6efd;
+            color: white;
+        }
+
+        .btn-register:hover {
+            background: #084298;
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 18px;
+            font-size: 14px;
+        }
+
+        .login-link a {
+            text-decoration: none;
+            color: #0d6efd;
+            font-weight: bold;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="register-card">
+        <h2>Create Account</h2>
+
+        @if(session('message'))
+            <div class="alert-success">
+                {{ session('message') }}
+            </div>
+        @endif
+
+        <form method="POST" action="{{ route('register.store') }}">
+            @csrf
+
+            <label>Full Name</label>
+            <input type="text" name="name" placeholder="Enter your name" required>
+
+            <label>Email Address</label>
+            <input type="email" name="email" placeholder="Enter your email" required>
+
+            <label>Password</label>
+            <input type="password" name="password" placeholder="Enter password" required>
+
+            <label>Confirm Password</label>
+            <input type="password" name="password_confirmation" placeholder="Confirm password" required>
+
+            <button type="submit" class="btn btn-register">Register</button>
+        </form>
+
+        <div class="login-link">
+            Already have an account?
+            <a href="{{ route('login') }}">Login</a>
+        </div>
+    </div>
+
+</body>
+</html>
