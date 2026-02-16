@@ -31,9 +31,11 @@ Route::post('/register-store', [AuthController::class, 'registerStore'])->name('
 Route::get('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/login-check', [AuthController::class, 'loginCheck'])->name('login.check');
 
-Route::get('/dashboard', [AuthController::class, 'dashboard'])->name('dashboard')->middleware('auth');
+Route::middleware(['auth'])->group(function(){
+    Route::get('/dashboard', [AuthController::class, 'dashboard'])->name('dashboard');
 
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+    Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+});
 
 
 

@@ -2,7 +2,9 @@
 
 <h3>Hello, {{ Auth::user()->name }}</h3>
 
-<form method="POST" action="{{ route('logout') }}">
+<a href="{{ route('logout') }}">Logout</a>
+
+{{-- <form method="POST" action="{{ route('logout') }}">
     @csrf
     <button type="submit">Logout</button>
-</form>
+</form> --}}

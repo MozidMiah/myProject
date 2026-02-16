@@ -36,7 +36,13 @@ class AuthController extends Controller
     // Login Page
     public function login()
     {
-        return view('auth.login');
+        // dd(Auth::user());
+        if(Auth::check()){
+            return redirect()->route('dashboard');
+        }else{
+            return view('auth.login');
+        }
+        
     }
 
     // Login Check
@@ -59,7 +65,12 @@ class AuthController extends Controller
     // Dashboard Page
     public function dashboard()
     {
-        return view('auth.dashboard');
+        if(Auth::check()){
+            return view('auth.dashboard');
+        }else{
+            return view('auth.login');
+        }
+        
     }
 
     // Logout
