@@ -67,6 +67,13 @@
             box-shadow: 0px 0px 5px rgba(13, 110, 253, 0.5);
         }
 
+        .error-text {
+            color: red;
+            font-size: 13px;
+            margin-top: 5px;
+            display: block;
+        }
+
         .btn {
             width: 100%;
             padding: 12px;
@@ -120,27 +127,50 @@
     <div class="login-card">
         <h2>Login</h2>
 
+        {{-- Success Message --}}
         @if (session('message'))
             <div class="alert-success">
                 {{ session('message') }}
             </div>
         @endif
 
+        {{-- Error Message --}}
         @if (session('error'))
             <div class="alert-error">
                 {{ session('error') }}
             </div>
         @endif
 
+        {{-- Validation Errors --}}
+        @if ($errors->any())
+            <div class="alert-error">
+                <ul style="margin:0; padding-left:18px;">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
         <form method="POST" action="{{ route('login.check') }}">
             @csrf
 
+            {{-- Email --}}
             <div class="form-group">
-                <input type="email" name="email" placeholder="Enter Email" required>
+                <input type="email" name="email" value="{{ old('email') }}" placeholder="Enter Email">
+
+                @error('email')
+                    <span class="error-text">{{ $message }}</span>
+                @enderror
             </div>
 
+            {{-- Password --}}
             <div class="form-group">
-                <input type="password" name="password" placeholder="Enter Password" required>
+                <input type="password" name="password" placeholder="Enter Password">
+
+                @error('password')
+                    <span class="error-text">{{ $message }}</span>
+                @enderror
             </div>
 
             <button type="submit" class="btn btn-login">Login</button>

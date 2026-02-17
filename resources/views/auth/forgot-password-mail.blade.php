@@ -1,128 +1,137 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Password Reset</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forgot Password</title>
+
     <style>
         body {
             margin: 0;
             padding: 0;
-            background: #f2f4f6;
             font-family: Arial, sans-serif;
-        }
-
-        .email-container {
-            width: 100%;
-            padding: 30px 0;
+            background: linear-gradient(135deg, #0d6efd, #6f42c1);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .card {
-            max-width: 600px;
-            margin: auto;
-            background: #ffffff;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0px 6px 20px rgba(0,0,0,0.08);
-        }
-
-        .header {
-            background: #0d6efd;
-            padding: 25px;
-            text-align: center;
-            color: white;
-        }
-
-        .header h2 {
-            margin: 0;
-            font-size: 22px;
-        }
-
-        .content {
+            background: white;
+            width: 420px;
             padding: 30px;
-            text-align: center;
+            border-radius: 12px;
+            box-shadow: 0px 8px 25px rgba(0, 0, 0, 0.2);
         }
 
-        .content p {
-            font-size: 15px;
-            color: #444;
-            line-height: 1.7;
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            outline: none;
+            font-size: 14px;
+        }
+
+        input:focus {
+            border-color: #0d6efd;
+            box-shadow: 0px 0px 5px rgba(13, 110, 253, 0.5);
         }
 
         .btn {
-            display: inline-block;
-            margin-top: 20px;
-            padding: 12px 28px;
-            background: #0d6efd;
-            color: white !important;
-            text-decoration: none;
-            font-size: 16px;
-            border-radius: 6px;
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            cursor: pointer;
             font-weight: bold;
+            transition: 0.3s;
+            margin-top: 10px;
         }
 
-        .btn:hover {
+        .btn-send {
+            background: #0d6efd;
+            color: white;
+        }
+
+        .btn-send:hover {
             background: #084298;
         }
 
-        .footer {
-            background: #f7f7f7;
-            padding: 15px;
+        .alert-success {
+            background: #d1e7dd;
+            color: #0f5132;
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            font-size: 14px;
             text-align: center;
-            font-size: 13px;
-            color: #777;
         }
 
-        .link-text {
-            margin-top: 20px;
+        .alert-error {
+            background: #f8d7da;
+            color: #842029;
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+
+        .error-text {
+            color: red;
             font-size: 13px;
-            color: #888;
-            word-break: break-all;
+            margin-top: 5px;
+            display: block;
         }
     </style>
 </head>
 
 <body>
 
-<div class="email-container">
+<div class="card">
+    <h2>Forgot Password</h2>
 
-    <div class="card">
-
-        <!-- Header -->
-        <div class="header">
-            <h2>Password Reset Request</h2>
+    @if(session('message'))
+        <div class="alert-success">
+            {{ session('message') }}
         </div>
+    @endif
 
-        <!-- Content -->
-        <div class="content">
-            <p>Hello,</p>
-
-            <p>
-                We received a request to reset your password.
-                Click the button below to reset your password.
-            </p>
-
-            <a href="{{ route('reset.password', $token) }}" class="btn">
-                Reset Password
-            </a>
-
-            <p style="margin-top: 25px;">
-                If you did not request a password reset, you can safely ignore this email.
-            </p>
-
-            <p class="link-text">
-                If button doesn't work, copy and paste this link into your browser:<br>
-                <a href="{{ route('reset.password', $token) }}">
-                    {{ route('reset.password', $token) }}
-                </a>
-            </p>
+    @if(session('error'))
+        <div class="alert-error">
+            {{ session('error') }}
         </div>
+    @endif
 
-        <!-- Footer -->
-        <div class="footer">
-            &copy; {{ date('Y') }} Your Application. All Rights Reserved.
+    @if ($errors->any())
+        <div class="alert-error">
+            <ul style="margin:0; padding-left:18px;">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
         </div>
+    @endif
 
-    </div>
+    <form action="{{ route('forgot.password.post') }}" method="POST">
+        @csrf
 
+        <input type="email" name="email" value="{{ old('email') }}" placeholder="Enter your email">
+
+        @error('email')
+            <span class="error-text">{{ $message }}</span>
+        @enderror
+
+        <button type="submit" class="btn btn-send">Send Reset Link</button>
+    </form>
 </div>
 
 </body>

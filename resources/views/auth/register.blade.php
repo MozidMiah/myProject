@@ -41,6 +41,15 @@
             text-align: center;
         }
 
+        .alert-error {
+            background: #f8d7da;
+            color: #842029;
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+
         label {
             font-weight: bold;
             font-size: 14px;
@@ -51,7 +60,7 @@
             width: 100%;
             padding: 12px;
             margin-top: 8px;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
             border: 1px solid #ccc;
             border-radius: 8px;
             outline: none;
@@ -61,6 +70,13 @@
         input:focus {
             border-color: #0d6efd;
             box-shadow: 0px 0px 5px rgba(13, 110, 253, 0.5);
+        }
+
+        .error-text {
+            color: red;
+            font-size: 13px;
+            margin-bottom: 12px;
+            display: block;
         }
 
         .btn {
@@ -106,26 +122,54 @@
     <div class="register-card">
         <h2>Create Account</h2>
 
+        {{-- Success Message --}}
         @if(session('message'))
             <div class="alert-success">
                 {{ session('message') }}
             </div>
         @endif
 
+        {{-- Validation Errors --}}
+        @if ($errors->any())
+            <div class="alert-error">
+                <ul style="margin:0; padding-left:18px;">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
         <form method="POST" action="{{ route('register.store') }}">
             @csrf
 
+            {{-- Name --}}
             <label>Full Name</label>
-            <input type="text" name="name" placeholder="Enter your name" required>
+            <input type="text" name="name" value="{{ old('name') }}" placeholder="Enter your name">
 
+            @error('name')
+                <span class="error-text">{{ $message }}</span>
+            @enderror
+
+            {{-- Email --}}
             <label>Email Address</label>
-            <input type="email" name="email" placeholder="Enter your email" required>
+            <input type="email" name="email" value="{{ old('email') }}" placeholder="Enter your email">
 
+            @error('email')
+                <span class="error-text">{{ $message }}</span>
+            @enderror
+
+            {{-- Password --}}
             <label>Password</label>
-            <input type="password" name="password" placeholder="Enter password" required>
+            <input type="password" name="password" placeholder="Enter password">
 
+            @error('password')
+                <span class="error-text">{{ $message }}</span>
+            @enderror
+
+            {{-- Confirm Password --}}
             <label>Confirm Password</label>
-            <input type="password" name="password_confirmation" placeholder="Confirm password" required>
+            <input type="password" name="password_confirmation" placeholder="Confirm password">
 
             <button type="submit" class="btn btn-register">Register</button>
         </form>

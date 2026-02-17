@@ -58,6 +58,13 @@
             text-align: center;
         }
 
+        .error-text {
+            color: red;
+            font-size: 13px;
+            margin-bottom: 10px;
+            display: block;
+        }
+
         label {
             font-weight: bold;
             font-size: 14px;
@@ -125,15 +132,28 @@
 
         <p>Enter your email address and we will send you a password reset link.</p>
 
-        @if(session('success'))
+        {{-- Success Message --}}
+        @if(session('message'))
             <div class="alert-success">
-                {{ session('success') }}
+                {{ session('message') }}
             </div>
         @endif
 
+        {{-- Error Message --}}
         @if(session('error'))
             <div class="alert-error">
                 {{ session('error') }}
+            </div>
+        @endif
+
+        {{-- Validation Errors --}}
+        @if ($errors->any())
+            <div class="alert-error">
+                <ul style="margin:0; padding-left:18px;">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
             </div>
         @endif
 
@@ -141,7 +161,11 @@
             @csrf
 
             <label>Email Address</label>
-            <input type="email" name="email" placeholder="Enter your email" required>
+            <input type="email" name="email" value="{{ old('email') }}" placeholder="Enter your email">
+
+            @error('email')
+                <span class="error-text">{{ $message }}</span>
+            @enderror
 
             <button type="submit" class="btn btn-send">Send Reset Link</button>
         </form>

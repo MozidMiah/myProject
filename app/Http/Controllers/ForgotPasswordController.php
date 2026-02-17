@@ -24,8 +24,13 @@ class ForgotPasswordController extends Controller
     public function forgotPasswordPost(Request $request)
     {
         $request->validate([
-            'email' => 'required|email|exists:users,email'
+            'email' => 'required|email|exists:users,email',
+        ], [
+            'email.required' => 'Email is required!',
+            'email.email' => 'Enter a valid email!',
+            'email.exists' => 'This email is not registered!',
         ]);
+
 
         $token = Str::random(64);
 
@@ -52,28 +57,45 @@ class ForgotPasswordController extends Controller
 
     // Reset Password Submit
     public function resetPasswordPost(Request $request)
-    {
-        $request->validate([
-            'email' => 'required|email|exists:users,email',
-            'password' => 'required|min:6|confirmed'
-        ]);
+{
+    // Step 1: Validate form input
+    $request->validate([
+        'email' => 'required|email|exists:users,email',
+        'password' => 'required|min:6|confirmed',
+        'token' => 'required',
+    ], [
+        'email.required' => 'Email is required!',
+        'email.email' => 'Enter a valid email!',
+        'email.exists' => 'This email is not registered!',
+        'password.required' => 'Password is required!',
+        'password.min' => 'Password must be at least 6 characters!',
+        'password.confirmed' => 'Password confirmation does not match!',
+        'token.required' => 'Token missing!',
+    ]);
 
-        $checkToken = password_resets::where('email', $request->email)
-            ->where('token', $request->token)
-            ->first();
+    // Step 2: Check if token is valid
+    $checkToken = password_resets::where('email', $request->email)
+        ->where('email', $request->email)
+        ->where('token', $request->token)
+        ->first();
 
-        if (!$checkToken) {
-            return back()->with('error', 'Invalid token!');
-        }
-
-        // Password Update
-        User::where('email', $request->email)->update([
-            'password' => Hash::make($request->password)
-        ]);
-
-        // token delete
-        password_resets::where('email', $request->email)->delete();
-
-        return redirect('/login')->with('success', 'Password reset successfully!');
+    if (!$checkToken) {
+        return back()
+            ->with('error', 'Invalid or expired token!')
+            ->withInput(); // keep old email input
     }
+
+    // Step 3: Update user's password
+    User::where('email', $request->email)->update([
+        'password' => Hash::make($request->password)
+    ]);
+
+    // Step 4: Delete used token
+    password_resets::where('email', $request->email)->delete();
+
+    // Step 5: Redirect with success message
+    return redirect()->route('login')
+        ->with('success', 'Password reset successfully!');
+}
+
 }

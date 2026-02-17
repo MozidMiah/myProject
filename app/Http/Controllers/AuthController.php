@@ -19,9 +19,17 @@ class AuthController extends Controller
     public function registerStore(Request $request)
     {
         $request->validate([
-            'name'     => 'required',
+            'name'     => 'required|string|max:20',
             'email'    => 'required|email|unique:users,email',
             'password' => 'required|min:6|confirmed',
+        ], [
+            'name.required' => 'Name is required!',
+            'email.required' => 'Email is required!',
+            'email.email' => 'Please enter a valid email!',
+            'email.unique' => 'This email already exists!',
+            'password.required' => 'Password is required!',
+            'password.min' => 'Password must be at least 6 characters!',
+            'password.confirmed' => 'Password confirmation does not match!',
         ]);
 
         User::create([
@@ -36,13 +44,11 @@ class AuthController extends Controller
     // Login Page
     public function login()
     {
-        // dd(Auth::user());
-        if(Auth::check()){
+        if (Auth::check()) {
             return redirect()->route('dashboard');
-        }else{
-            return view('auth.login');
         }
-        
+
+        return view('auth.login');
     }
 
     // Login Check
@@ -50,27 +56,31 @@ class AuthController extends Controller
     {
         $request->validate([
             'email'    => 'required|email',
-            'password' => 'required',
+            'password' => 'required|min:6',
+        ], [
+            'email.required' => 'Email is required!',
+            'email.email' => 'Enter a valid email address!',
+            'password.required' => 'Password is required!',
+            'password.min' => 'Password must be at least 6 characters!',
         ]);
 
         $credentials = $request->only('email', 'password');
 
         if (Auth::attempt($credentials)) {
-            return redirect()->route('dashboard');
+            return redirect()->route('dashboard')->with('message', 'Login Successful!');
         }
 
-        return back()->with('error', 'Invalid Email or Password');
+        return back()->with('error', 'Invalid Email or Password')->withInput();
     }
 
     // Dashboard Page
     public function dashboard()
     {
-        if(Auth::check()){
+        if (Auth::check()) {
             return view('auth.dashboard');
-        }else{
-            return view('auth.login');
         }
-        
+
+        return redirect()->route('login')->with('error', 'Please login first!');
     }
 
     // Logout
