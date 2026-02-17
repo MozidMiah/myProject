@@ -75,7 +75,6 @@ class ForgotPasswordController extends Controller
 
     // Step 2: Check if token is valid
     $checkToken = password_resets::where('email', $request->email)
-        ->where('email', $request->email)
         ->where('token', $request->token)
         ->first();
 
