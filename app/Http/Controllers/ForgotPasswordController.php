@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\SendWelcomeEmail;
 use App\Mail\ResetPasswordMail;
 use App\Models\password_resets;
 use Illuminate\Http\Request;
@@ -41,9 +42,9 @@ class ForgotPasswordController extends Controller
             'token' => $token,
             'created_at' => Carbon::now()
         ]);
-
         // Send Mail
-        Mail::to($request->email)->send(new ResetPasswordMail($token));
+        // Mail::to($request->email)->send(new ResetPasswordMail($token));
+        SendWelcomeEmail::dispatch($request->email, $token);
 
         return back()->with('success', 'Reset password link has been sent to your email!');
     }
