@@ -143,7 +143,6 @@
         <form method="POST" action="{{ route('register.store') }}">
             @csrf
 
-            {{-- Name --}}
             <label>Full Name</label>
             <input type="text" name="name" value="{{ old('name') }}" placeholder="Enter your name">
 
@@ -151,15 +150,13 @@
                 <span class="error-text">{{ $message }}</span>
             @enderror
 
-            {{-- Email --}}
             <label>Email Address</label>
             <input type="email" name="email" value="{{ old('email') }}" placeholder="Enter your email">
 
             @error('email')
                 <span class="error-text">{{ $message }}</span>
             @enderror
-
-            {{-- Password --}}
+            
             <label>Password</label>
             <input type="password" name="password" placeholder="Enter password">
 
@@ -167,7 +164,6 @@
                 <span class="error-text">{{ $message }}</span>
             @enderror
 
-            {{-- Confirm Password --}}
             <label>Confirm Password</label>
             <input type="password" name="password_confirmation" placeholder="Confirm password">
 

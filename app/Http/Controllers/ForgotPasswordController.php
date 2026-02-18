@@ -58,22 +58,21 @@ class ForgotPasswordController extends Controller
     // Reset Password Submit
     public function resetPasswordPost(Request $request)
 {
-    // Step 1: Validate form input
     $request->validate([
+        'token' => 'required',
         'email' => 'required|email|exists:users,email',
         'password' => 'required|min:6|confirmed',
-        'token' => 'required',
     ], [
+        'token.required' => 'Token missing!',
         'email.required' => 'Email is required!',
-        'email.email' => 'Enter a valid email!',
+        'email.email' => 'Enter a valid email address!',
         'email.exists' => 'This email is not registered!',
         'password.required' => 'Password is required!',
         'password.min' => 'Password must be at least 6 characters!',
-        'password.confirmed' => 'Password confirmation does not match!',
-        'token.required' => 'Token missing!',
+        'password.confirmed' => 'Confirm password does not match!',
     ]);
 
-    // Step 2: Check if token is valid
+    // Check if token is valid
     $checkToken = password_resets::where('email', $request->email)
         ->where('token', $request->token)
         ->first();
@@ -84,15 +83,15 @@ class ForgotPasswordController extends Controller
             ->withInput(); // keep old email input
     }
 
-    // Step 3: Update user's password
+    // Update user's password
     User::where('email', $request->email)->update([
         'password' => Hash::make($request->password)
     ]);
 
-    // Step 4: Delete used token
+    // Delete used token
     password_resets::where('email', $request->email)->delete();
 
-    // Step 5: Redirect with success message
+    //Redirect with success message
     return redirect()->route('login')
         ->with('success', 'Password reset successfully!');
 }
